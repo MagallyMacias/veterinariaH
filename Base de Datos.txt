@@ -1,0 +1,90 @@
+create database prueba;
+use prueba;
+
+create table Usuario (
+                IDUsuario int auto_increment primary key not null,
+                Rol int(2) not null,
+                ApellidoPaterno varchar(20) not null,
+                ApellidoMaterno varchar(20) not null,
+                Nombre varchar(20) not null,
+                Edad int not null,
+                CorreoUsuario varchar(40) not null,
+                Clave varchar(100) not null
+);
+
+
+create table Tipo(
+                IDTipo int auto_increment primary key not null,
+                Rol varchar(20) not null,
+                foreign key(Rol) references Usuario(IDTipo) 
+                on delete cascade on update cascade
+);
+
+
+create table Mascota (
+                IDMascota int auto_increment primary key  not null,
+                IDUsuario int not null,
+                NombreMascota varchar(20) not null,
+                RazaMascota varchar(20) not null,
+                SexoMascota varchar(10) not null,
+                EdadMascota int not null,
+                TamanoMascota double not null,
+                PesoMascota double not null,
+                foreign key(IDUsuario) references Usuario(IDUsuario) 
+                on delete cascade on update cascade
+);
+
+create table EnfermedadesMascotas (
+                IDEnfermedad int auto_increment primary key  not null,
+                IDMascota int not null,
+                NombreEnfermedad varchar(20) not null,
+                SintomaEnfermedad varchar(50) not null,
+                TipoEnfermedad varchar(100) not null,
+                foreign key(IDMascota) references Mascota(IDMascota) 
+                on delete cascade on update cascade
+);
+
+create table VacunasMascota (
+                IDVacuna int auto_increment primary key  not null,
+                IDMascota int not null,
+                NombreVacuna varchar(20) not null,
+                Aplicacion varchar (20) not null,
+                Revacunacion  varchar (20) not null,
+                Recomendaciones  varchar(100) not null,
+                foreign key(IDMascota) references Mascota(IDMascota) 
+                on delete cascade on update cascade
+);
+
+create table AlergiasMascota (
+                IDAlergia int auto_increment primary key  not null,
+                IDMascota int not null,
+                Alergia varchar(20) not null,              
+                Reaccion varchar(50) not null,
+                foreign key(IDMascota) references Mascota(IDMascota) 
+                on delete cascade on update cascade
+);
+
+
+create table AlimentacionMascota (
+                IDAlimento int auto_increment primary key  not null,
+                IDMascota int not null,
+                AlimentoRecomendado varchar(50) not null,
+                Cantidad int not null,
+                AlimentosNoRecomendados varchar(50) not null,
+                foreign key(IDMascota) references Mascota(IDMascota) 
+                on delete cascade on update cascade
+);
+
+create table Tratamiento (
+                IDTratamiento int auto_increment primary key  not null,
+                IDMascota int not null,                
+                IDEnfermedad int not null,
+                Comprimidos varchar(50) not null,
+                Suero varchar(50) not null,
+                Inyectable varchar(50) not null,
+                Internacion varchar(2) not null,
+                foreign key(IDMascota) references Mascota(IDMascota) 
+                on delete cascade on update cascade,
+                foreign key(IDEnfermedad) references EnfermedadesMascotas(IDEnfermedad)
+                on delete cascade on update cascade
+);
